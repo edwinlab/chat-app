@@ -1,18 +1,28 @@
 <template>
 <div class="message">
     <ul>
-        <li>
-            <p class="time">
-                <span>10:10</span>
-            </p>
+        <li v-for="message in messages">
             <div class="main">
                 <img class="avatar" width="30" height="30" src="../assets/avatar.png" />
-                <div class="text">Message</div>
+                <div class="text">{{ message }}</div>
             </div>
         </li>
     </ul>
 </div>
 </template>
+
+<script>
+import store from '@/store';
+
+export default {
+  name: 'Message',
+  data() {
+    return {
+      messages: store.state.messages,
+    };
+  },
+};
+</script>
 
 <style lang="less" scoped>
 .message {

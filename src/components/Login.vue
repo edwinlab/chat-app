@@ -30,6 +30,7 @@
           }).then((response) => {
             localStorage.setItem('token', response.data.user.token);
             store.commit('LOGIN_USER');
+            localStorage.setItem('username', response.data.user.username);
             router.push('/chat');
           })
           .catch((e) => {
@@ -44,11 +45,12 @@
 <template>
   <div class="login">
     <form>
-    <div class="box">
-      <input type="input" v-model.trim="username" name="username" placeholder="username" class="input" />
-      <input type="password" v-model.trim="password" name="password" placeholder="password" class="input" />
-      <a href="javascript:void(0)" type="submit" class="btn" v-on:click.prevent="login">Sign In</a>
-    </div>
+      <div class="box">
+        <div class="info info-error" v-if="infoError">Login failed. Please try again.</div>
+        <input type="input" v-model.trim="username" name="username" placeholder="username" class="input" />
+        <input type="password" v-model.trim="password" name="password" placeholder="password" class="input" />
+        <a href="javascript:void(0)" type="submit" class="btn" v-on:click.prevent="login">Sign In</a>
+      </div>
     </form>
   </div>
 </template>

@@ -1,7 +1,6 @@
 <template>
 <div id="app">
     <div class="sidebar">
-        <card></card>
         <list></list>
     </div>
     <div class="main">
@@ -12,7 +11,6 @@
 </template>
 
 <script>
-import Card from '@/components/Card';
 import List from '@/components/List';
 import TextForm from '@/components/TextForm';
 import Message from '@/components/Message';
@@ -24,8 +22,18 @@ export default {
     if (!store.state.isLogged) {
       router.push('/');
     }
+    if (store.state.isLogged) {
+      this.$socket.emit('userLogin', store.state.username);
+    }
   },
-  components: { Card, List, TextForm, Message },
+  sockets: {
+    newMessage(res) {
+      if (res.username !== store.state.username) {
+        store.commit('SOCKET_MESSAGE', res.message);
+      }
+    },
+  },
+  components: { List, TextForm, Message },
 };
 </script>
 

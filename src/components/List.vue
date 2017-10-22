@@ -3,7 +3,7 @@
     <ul>
         <li>
             <img class="avatar" src="../assets/avatar.png" width="30" height="30">
-            <p class="name">Test</p>
+            <p class="name">MeongCorp</p>
         </li>
     </ul>
 </div>

@@ -1,8 +1,32 @@
 <template>
 <div class="text">
-    <textarea placeholder="Ctrl + Enter"></textarea>
+    <textarea placeholder="Ctrl + Enter" v-model="content" @keyup="onKeyup"></textarea>
 </div>
 </template>
+
+<script>
+import store from '@/store';
+
+export default {
+  data() {
+    return {
+      content: '',
+    };
+  },
+  methods: {
+    onKeyup(e) {
+      if (e.ctrlKey && e.keyCode === 13 && this.content.length) {
+        this.sendMessage(this.content);
+        this.content = '';
+      }
+    },
+    sendMessage(content) {
+      store.commit('SOCKET_MESSAGE', content);
+      this.$socket.emit('sendMessage', content);
+    },
+  },
+};
+</script>
 
 <style lang="less" scoped>
 .text {
