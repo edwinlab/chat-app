@@ -1,13 +1,54 @@
+<script>
+    import axios from 'axios';
+    import router from '@/router';
+    import store from '@/store';
+
+    export default {
+      name: 'Login',
+
+      data() {
+        return {
+          infoError: false,
+          errors: [],
+          username: '',
+          password: '',
+        };
+      },
+
+      beforeCreate() {
+        if (store.state.isLogged) {
+          router.push('/chat');
+        }
+      },
+
+      methods: {
+        login() {
+          this.infoError = false;
+          axios.post('https://oy-chat-api.herokuapp.com/login', {
+            username: this.username,
+            password: this.password,
+          }).then((response) => {
+            localStorage.setItem('token', response.data.user.token);
+            store.commit('LOGIN_USER');
+            router.push('/chat');
+          })
+          .catch((e) => {
+            this.errors.push(e);
+            this.infoError = true;
+          });
+        },
+      },
+    };
+</script>
+
 <template>
   <div class="login">
-    <form method="post" action="index.html">
+    <form>
     <div class="box">
-      <h1>Dashboard</h1>
-      <input type="email" name="email" value="email" class="email" />
-      <input type="password" name="email" value="email" class="email" />
-      <router-link to="chat"><div class="btn">Sign In</div></router-link>
-    </div> <!-- End Box -->
-
+      <input type="input" v-model.trim="username" name="username" placeholder="username" class="input" />
+      <input type="password" v-model.trim="password" name="password" placeholder="password" class="input" />
+      <a href="javascript:void(0)" type="submit" class="btn" v-on:click.prevent="login">Sign In</a>
+    </div>
     </form>
   </div>
 </template>
@@ -21,28 +62,18 @@
     width:300px;
     border-radius:6px;
     margin: 0 auto 0 auto;
-    padding:10px 10px 70px 20px;
+    padding:20px 20px 70px 20px;
   }
 
-  .email{
+  .input{
     background:#ecf0f1;
     border: #ccc 1px solid;
-    border-bottom: #ccc 2px solid;
     padding: 8px;
     width:250px;
     color:#AAAAAA;
     margin-top:10px;
     font-size:1em;
     border-radius:4px;
-  }
-
-  .password{
-    border-radius:4px;
-    background:#ecf0f1;
-    border: #ccc 1px solid;
-    padding: 8px;
-    width:250px;
-    font-size:1em;
   }
 
   .btn{
@@ -57,10 +88,11 @@
     margin-top:20px;
     margin-bottom:20px;
     float:right;
-    margin-right:20px;
+    margin-right:10px;
     padding-left: 10px;
     font-weight:800;
     font-size:0.8em;
+    text-decoration: none;
   }
 
   .btn:hover{

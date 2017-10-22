@@ -16,8 +16,15 @@ import Card from '@/components/Card';
 import List from '@/components/List';
 import TextForm from '@/components/TextForm';
 import Message from '@/components/Message';
+import store from '@/store';
+import router from '@/router';
 
 export default {
+  beforeCreate() {
+    if (!store.state.isLogged) {
+      router.push('/');
+    }
+  },
   components: { Card, List, TextForm, Message },
 };
 </script>
